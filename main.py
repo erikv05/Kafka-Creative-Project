@@ -3,16 +3,18 @@
 
 import time
 import webbrowser
-from landmark import Landmark
+import landmark
 
 class Game:
 
     hours_to_survive = 720
+    hours_survived = 0
     food = 0
     water = 0
     currency = 500
-    health = {"good", "moderate", "marginal", "critical"}
+    health = ["good", "moderate", "marginal", "critical"]
     current_health = 0
+    landmarks = [landmark.FirstEncounter("Test", 48)]
 
     def raise_health(self):
         if (self.current_health == 0):
@@ -101,7 +103,7 @@ class Game:
         water_cost = 3
         done = False
         while (not done):
-            enter = input("Please input the resource you wish to buy or ENTER to finish buying goods (FOOD/WATER): ")
+            enter = input("Please input the resource you wish to buy or ENTER to finish buying goods (FOOD/WATER/ENTER): ")
             if (enter.lower() == "food"):
                 self.food = self.get_int_input("Amount of food purchased: ")
             elif (enter.lower() == "water"):
@@ -114,14 +116,44 @@ class Game:
             print("Total bill: $" + str(self.water * water_cost + self.food * food_cost))
         self.currency -= (self.water * water_cost + self.food * food_cost)
 
+    def progress(self):
+        print("You have survived " + str(self.hours_survived) + " hours.")
+        enter = input("Would you like to progress time or assess the situation ([P]ROGRESS/[A]SSESS): ")
+        
+        if ((enter.lower() == "assess") | (enter.lower() == "a")):
+            self.print_stats()
+            #TODO: add sneaking out feature
+            enter = input("Would you like to try and sneak out to get food or water (NO/FOOD/WATER): ")
+            #if (enter.lower() == "food"):
+        else:
+            self.hours_survived += 24
+            self.food -= 5
+            self.water -= 1
+            #TODO: add food stealing feature
+
+    def print_stats(self):
+            print("You have survied " + str(self.hours_survived) + " hours. You have $" + str(self.currency) + " left.")
+            print("You have " + str(self.food) + " pieces of food and " + str(self.water) + " glasses of water left.")
+            print("Your health is " + str(self.health[self.current_health]) + ".")
+        
     def main(self):
+        done = False
         dead = False
         self.instructions()
         self.buy_goods()
+        while ((self.hours_survived < self.hours_to_survive) & (done == False)):
+            self.progress()
+            if (bool(self.landmarks)):
+                if (self.hours_survived >= self.landmarks[0].distance):
+                    self.hours_survived = self.landmarks[0].distance
+                    self.landmarks[0].play_landmark()
+                    self.landmarks.pop(0)
+        if (done == False):
+            print("Hours survived: 720")
+            print("Congratulations! You have successfully survived life as a bug.")
 
-try:
-    action = Game()
-    action.main()
-except Exception as e:
-    print("Unknown exception occured:")
-    print(e)
+        
+
+
+action = Game()
+action.main()

@@ -21,8 +21,8 @@ macOS:
 
 1) Open terminal (command+space, search 'terminal')
 
-2) Type: python3 <PATH>
--<PATH> is replaced with the path of the file
+2) Type: python3 PATH
+-PATH is replaced with the path of the file
 
 To find the path, just drag and drop the main.py file into terminal.
 

@@ -16,7 +16,6 @@ class Game:
     health = ["good", "marginal", "critical"]
     current_health = 0
     landmarks = [landmark.FirstEncounter("Test", 48)]
-    done = False #TODO remove if redundant
     dead = False
 
     def raise_health(self):
@@ -260,7 +259,7 @@ class Game:
     def main(self):
         self.instructions()
         self.buy_goods()
-        while ((self.hours_survived < self.hours_to_survive) & (not self.done) & (not self.dead)):
+        while ((self.hours_survived < self.hours_to_survive) & (not self.dead)):
             self.check_alive()
             if(not self.dead):
                 self.progress()

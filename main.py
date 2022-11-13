@@ -6,17 +6,20 @@ import time
 import webbrowser
 import landmark
 
+
+
 class Game:
 
-    hours_to_survive = 720
-    hours_survived = 0
-    food = 0
-    water = 0
-    currency = 500
-    health = ["good", "marginal", "critical"]
-    current_health = 0
-    landmarks = [landmark.FirstEncounter("Test", 48)]
-    dead = False
+    def __init__(self):
+        self.hours_to_survive = 720
+        self.hours_survived = 0
+        self.food = 0
+        self.water = 0
+        self.currency = 500
+        self.health = ["good", "marginal", "critical"]
+        self.current_health = 0
+        self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision()]
+        self.dead = False
 
     def raise_health(self):
         if (self.current_health == 0):
@@ -144,7 +147,7 @@ class Game:
             else:
                 print("Invalid input. Try again.")
         prob = random.random()
-        if (prob < (risk + 1) / 10):
+        if (prob < (risk + 2) / 10):
             print("You were caught stealing food.")
             self.lower_health()
             if (self.dead):
@@ -181,7 +184,7 @@ class Game:
             else:
                 print("Invalid input. Try again.")
         prob = random.random()
-        if (prob < (risk + 1) / 10):
+        if (prob < (risk + 2) / 10):
             print("You were caught stealing water.")
             self.lower_health()
             if (self.dead):
@@ -194,31 +197,6 @@ class Game:
             self.water += 1 * risk + 2
             print("You now have " + str(self.water) + " glasses of water.")
             
-
-    def progress(self):
-        print("You have survived " + str(self.hours_survived) + " hours.")
-        enter = input("Would you like to progress time or assess the situation ([P]ROGRESS/[A]SSESS): ")
-        
-        if ((enter.lower() == "assess") | (enter.lower() == "a")):
-            self.print_stats()
-            enter = input("Would you like to try and sneak out to get food or water (ENTER/FOOD/WATER): ")
-            if (enter.lower() == "food"):
-                self.steal_food()
-            elif (enter.lower() == "water"):
-                self.steal_water()
-        else:
-            self.hours_survived += 24
-            self.food -= 5
-            self.water -= 1
-            steal_prob = random.random()
-            if (steal_prob < 0.1):
-                stolen_food = random.randrange(0, 10)
-                stolen_water = random.randrange(0, 3)
-                self.food -= stolen_food
-                self.water -= stolen_water
-                print("Grete snuck in during the night and stole " + str(stolen_food) + " pieces of food and " + str(stolen_water) + " pieces of water.")
-            
-
     def print_stats(self):
             print("You have survied " + str(self.hours_survived) + " hours. You have $" + str(self.currency) + " left.")
             print("You have " + str(self.food) + " pieces of food and " + str(self.water) + " glasses of water left.")
@@ -256,6 +234,29 @@ class Game:
             self.dead = True
             self.play_starved()
 
+    def progress(self):
+        print("You have survived " + str(self.hours_survived) + " hours.")
+        enter = input("Would you like to progress time or assess the situation ([P]ROGRESS/[A]SSESS): ")
+        
+        if ((enter.lower() == "assess") | (enter.lower() == "a")):
+            self.print_stats()
+            enter = input("Would you like to try and sneak out to get food or water (ENTER/FOOD/WATER): ")
+            if (enter.lower() == "food"):
+                self.steal_food()
+            elif (enter.lower() == "water"):
+                self.steal_water()
+        else:
+            self.hours_survived += 24
+            self.food -= 5
+            self.water -= 1
+            steal_prob = random.random()
+            if (steal_prob < 0.1):
+                stolen_food = random.randrange(0, 10)
+                stolen_water = random.randrange(0, 3)
+                self.food -= stolen_food
+                self.water -= stolen_water
+                print("Grete snuck in during the night and stole " + str(stolen_food) + " pieces of food and " + str(stolen_water) + " pieces of water.")
+    
     def main(self):
         self.instructions()
         self.buy_goods()
@@ -266,12 +267,21 @@ class Game:
                 if (bool(self.landmarks)):
                     if (self.hours_survived >= self.landmarks[0].distance):
                         self.hours_survived = self.landmarks[0].distance
-                        self.landmarks[0].play_landmark(self)
+                        result = self.landmarks[0].play_landmark()
+                        if (result == None):
+                            self.dead = True
+                        elif result == "food+":
+                            self.food += 30
+                        elif result == "food-":
+                            self.food -= 50
+                        else:
+                            self.current_health += result
                         self.landmarks.pop(0)
         if (not self.dead):
             self.check_alive()
         if (not self.dead):
             self.print_survival_text()
+        #end
 
         
 

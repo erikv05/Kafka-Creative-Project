@@ -202,7 +202,7 @@ class Game:
     
     def play_drowned(self):
         #TODO video
-        print("Drowned")
+        print("Ran out of water")
     
     def play_starved(self):
         #TODO video

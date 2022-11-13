@@ -15,20 +15,24 @@ class Game:
         self.food = 0
         self.water = 0
         self.currency = 500
-        self.health = ["good", "marginal", "critical"]
+        self.health = ["good", "moderate", "marginal", "critical"]
         self.current_health = 0
-        self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision(), landmark.HideFromSister()]
+        self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision(), landmark.HideFromSister(), landmark.AppleEncounter(), landmark.Boarders(), landmark.DadTrap(), landmark.Maid()]
         self.dead = False
 
     def raise_health(self):
         if (self.current_health == 0):
             return
         self.current_health -= 1
+        print("Your health is now " + self.health[self.current_health] + ".")
 
     def lower_health(self):
         self.current_health += 1
         if (self.current_health >= len(self.health)):
             self.dead = True
+            print("Your health has run out. You are now dead.")
+            return
+        print("Your health is now " + self.health[self.current_health] + ".")
 
 
     def get_int_input(self):
@@ -77,7 +81,7 @@ class Game:
             print("One day you wake up and you turn into a massive bug. You still")
             print("have some of your voice, but not for long. Your goal is to survive")
             print("one month as a bug in the same house as your hostile family. After")
-            print("one month, you will be granted your freedom, but it wont be easy.")
+            print("one month, you will be granted your freedom, but it won't be easy.")
             print()
             print("Any time you are asked to input yes/no, the program will default to no")
             print("if you input something like, \'I BET YOU DIDN\'T CONSIDER THIS CASE ERIK")
@@ -103,7 +107,7 @@ class Game:
 
     def buy_goods(self):
         print("You will need food and water. Occasionally, Grete might steal your resources.")
-        print("Otherwise, you will need 5 pieces of food and 1 glass of water per day.")
+        print("Otherwise, you will need about 6 pieces of food and about 2 glasses of water per day.")
         print("Food costs $1/piece and water costs $3/glass.")
         food_cost = 1
         water_cost = 3
@@ -117,6 +121,8 @@ class Game:
             elif (enter == ""):
                 if ((self.food * food_cost + self.water * water_cost) > self.currency):
                     print("You don't have enough money for this bill!")
+                elif (self.food < 0) | (self.water < 0):
+                    print("How are you supposed to have negative food or water?")
                 else:
                     done = True
             print("Total bill: $" + str(self.water * water_cost + self.food * food_cost))
@@ -148,12 +154,8 @@ class Game:
         prob = random.random()
         if (prob < (risk + 2) / 10):
             print("You were caught stealing food.")
-            self.lower_health()
-            if (self.dead):
-                self.play_caught_dead()
-            else:
-                self.play_caught_hurt()
-                print("Your dad slaps you across the face. Your health is now " + self.health[self.current_health] + ".")
+            self.play_caught_hurt()
+            self.lower_health()   
         if (not self.dead):
             print("You stole " + str(10 * risk + 10) + " pieces of food.")
             self.food += 10 * risk + 10
@@ -185,12 +187,8 @@ class Game:
         prob = random.random()
         if (prob < (risk + 2) / 10):
             print("You were caught stealing water.")
-            self.lower_health()
-            if (self.dead):
-                self.play_caught_dead()
-            else:
-                self.play_caught_hurt()
-                print("Your dad injures you. Your health is now " + self.health[self.current_health] + ".")
+            self.play_caught_hurt()
+            self.lower_health()   
         if (not self.dead):
             print("You stole " + str(1 * risk + 2) + " glasses of water.")
             self.water += 1 * risk + 2
@@ -200,10 +198,6 @@ class Game:
             print("You have survied " + str(self.hours_survived) + " hours. You have $" + str(self.currency) + " left.")
             print("You have " + str(self.food) + " pieces of food and " + str(self.water) + " glasses of water left.")
             print("Your health is " + str(self.health[self.current_health]) + ".")
-
-    def print_survival_text(self):
-        print("Hours survived: 720")
-        print("Congratulations! You have successfully survived life as a bug.")
     
     def play_drowned(self):
         #TODO video
@@ -212,10 +206,6 @@ class Game:
     def play_starved(self):
         #TODO video
         print("Starved")
-
-    def play_caught_dead(self):
-        #TODO video
-        print("Caught dead")
 
     def play_caught_hurt(self):
         #TODO video
@@ -234,7 +224,7 @@ class Game:
             self.play_starved()
 
     def progress(self):
-        print("You have survived " + str(self.hours_survived) + " hours.")
+        print("You have survived " + str(self.hours_survived) + " hours total.")
         enter = input("Would you like to progress time or assess the situation ([P]ROGRESS/[A]SSESS): ")
         
         if ((enter.lower() == "assess") | (enter.lower() == "a")):
@@ -246,10 +236,11 @@ class Game:
                 self.steal_water()
         else:
             self.hours_survived += 24
-            self.food -= 5
-            self.water -= 1
+            self.food -= random.randrange(2, 10)
+            self.water -= random.randrange(1, 3)
+            self.check_alive()
             steal_prob = random.random()
-            if (steal_prob < 0.1):
+            if (steal_prob < 0.2):
                 stolen_food = random.randrange(0, 10)
                 stolen_water = random.randrange(0, 3)
                 self.food -= stolen_food
@@ -260,7 +251,6 @@ class Game:
         self.instructions()
         self.buy_goods()
         while ((self.hours_survived < self.hours_to_survive) & (not self.dead)):
-            self.check_alive()
             if(not self.dead):
                 self.progress()
                 if (bool(self.landmarks)):
@@ -273,14 +263,26 @@ class Game:
                             self.food += 30
                         elif result == "food-":
                             self.food -= 50
-                        else:
-                            self.current_health += result
+                        elif result == "water-":
+                            self.water -= 3
+                        elif result == "water--":
+                            self.water -= 10
+                        elif result == -1:
+                            self.raise_health()
+                        elif result == 0:
+                            pass
+                        elif result == 1:
+                            self.lower_health()
+                        elif result == "bribe":
+                            prob = random.randrange(0, 260)
+                            if self.currency > prob:
+                                print("The boarders accept your bribe. You are free.")
+                                #TODO: accept bribe
+                                break
+                            else:
+                                print("The boarders do not accept your bribe, hurting you in the process.")
+                                self.lower_health()
                         self.landmarks.pop(0)
-        if (not self.dead):
-            self.check_alive()
-        if (not self.dead):
-            self.print_survival_text()
-        #end
 
         
 

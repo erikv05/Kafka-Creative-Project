@@ -39,3 +39,7 @@ Windows:
 ____
 
 Mechanically, if there are two choices to act and you don't type a valid option, the first choice will usually be assumed. For instance, if I ask you to type YES/NO, and you type "maybe," the program will assume you typed yes. Make sure to avoid typos. Case is ignored.
+
+____
+
+Also, whenever something happens in the game, a video of Nathaniel doing something should prop up in a web tab. Don't close these tabs thinking your computer is just broken.

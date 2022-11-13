@@ -1,4 +1,3 @@
-#TODO: add instructions to README
 #TODO: add citaitons to README
 
 import random
@@ -18,7 +17,7 @@ class Game:
         self.currency = 500
         self.health = ["good", "marginal", "critical"]
         self.current_health = 0
-        self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision()]
+        self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision(), landmark.HideFromSister()]
         self.dead = False
 
     def raise_health(self):

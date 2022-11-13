@@ -1,4 +1,7 @@
 import webbrowser
+import time
+import sys
+from threading import Thread
 class Landmark:
     def __init__(self):
         self.distance = 0
@@ -41,7 +44,7 @@ class OfficeManager(Landmark):
         else:
             print("You run outside and try to explain the situation. You forget that you can't talk.")
             print("Your boss runs away and your dad chases back inside with a newspaper, hitting you.")
-            return -1
+            return 1
             #TODO: add video
 
 class FoodDecision(Landmark):
@@ -49,7 +52,6 @@ class FoodDecision(Landmark):
         self.distance = 288
     def play_landmark(self):
         print("Your sister is concerned and wants to give you food.")
-        print("She puts some fresh food and some rotten food on your plate. Which do you eat?")
         enter = input("She puts some fresh food and some rotten food on your plate. Which do you eat? (FRESH/ROTTEN): ")
         
         if enter.lower() == "rotten":
@@ -62,3 +64,36 @@ class FoodDecision(Landmark):
             print("You lose 50 pieces of food.")   
             return "food-"
             #TODO: add video
+
+class HideFromSister(Landmark):
+    def __init__(self):
+        self.distance = 384
+    def play_landmark(self):
+        print("Your sister is about to come into the room. You must hide. You have two seconds for the next prompt.")
+        time.sleep(2)
+        self.answer = None
+        def check():
+            time.sleep(2)
+            if (self.answer == None) or (self.answer.lower() != "hide"):
+                print("Your sister sees yor ugly face. She accidentally punches you out of fear.")
+                #TODO: add video 
+            else:
+                print("You hide from your sister successfully.")
+                self.answer = "safe"
+                #TODO: add video
+
+        Thread(target = check).start()
+        self.answer = input("Enter \'HIDE\': ")
+
+        if (self.answer == "safe"):
+            return 0
+        else:
+            return 1
+
+#5: Dad apple encounter (either you try to explain to your dad how you didn't hurt her and get apple thrown, or you sit and do nothing and he just takes food)
+
+#6: Boarders (either Gregor stays in room and doesn't scare them, or listens to violin and gets healed but inevitably gets thrown out the window, or bribe boarders to let him out)
+
+#7: Dad trying to lure him out (witch trials - either you have done something wrong if you agree, or you sit inside and they think you're dead)
+
+#8: Finally, Maid telling him that she can get him out (everyone else thinks you're dead-stay inside and die of sadness, get out and live happy life as maid lets you out)

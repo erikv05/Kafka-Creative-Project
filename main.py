@@ -106,7 +106,7 @@ class Game:
             print("Good luck!")
 
     def buy_goods(self):
-        print("You must survive one month.")
+        print("You must survive one month. You have $500.")
         print("You will need food and water. Occasionally, Grete might steal your resources.")
         print("Otherwise, you will need about 6 pieces of food and about 2 glasses of water per day.")
         print("Food costs $1/piece and water costs $3/glass.")

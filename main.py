@@ -19,8 +19,14 @@ class Game:
         self.current_health = 0
         self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision(), landmark.HideFromSister(), landmark.AppleEncounter(), landmark.Boarders(), landmark.DadTrap(), landmark.Maid()]
         self.dead = False
-        self.videoDict = {"thirst" : "https://youtu.be/8TmwEUHKRo8"}
+        self.videoDict = {"thirst" : "https://youtu.be/8TmwEUHKRo8",
+         "starved" : "https://www.youtube.com/watch?v=yKG0uEV54Sk",
+         "bribe_failure" : "https://www.youtube.com/watch?v=1jQrROhz0d8",
+         "bribe_success" : "https://www.youtube.com/watch?v=NnFxpSS4Hvo"}
 
+    def play(self, event):
+        webbrowser.open_new_tab(self.videoDict[event])
+    
     def raise_health(self):
         if (self.current_health == 0):
             return
@@ -202,11 +208,11 @@ class Game:
             print("Your health is " + str(self.health[self.current_health]) + ".")
     
     def play_thirst(self):
-        webbrowser.open_new_tab(self.videoDict["thirst"])
+        self.play("thirst")
         print("Ran out of water")
     
     def play_starved(self):
-        webbrowser.open_new_tab(self.videoDict["starved"])
+        self.play("starved")
         print("Starved")
 
     def play_caught_hurt(self):
@@ -220,7 +226,7 @@ class Game:
             raise Exception("Health > " + len(self.health))
         if self.water < 0:
             self.dead = True
-            self.play_drowned()
+            self.play_thirst()
         if self.food < 0:
             self.dead = True
             self.play_starved()
@@ -279,10 +285,11 @@ class Game:
                             prob = random.randrange(0, 260)
                             if self.currency > prob:
                                 print("The boarders accept your bribe. You are free.")
-                                #TODO: accept bribe
+                                self.play("bribe_failure")
                                 break
                             else:
                                 print("The boarders do not accept your bribe, hurting you in the process.")
+                                self.play("bribe_success")
                                 self.lower_health()
                         self.landmarks.pop(0)
 

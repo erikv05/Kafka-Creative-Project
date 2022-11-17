@@ -200,7 +200,7 @@ class Game:
             print("You have " + str(self.food) + " pieces of food and " + str(self.water) + " glasses of water left.")
             print("Your health is " + str(self.health[self.current_health]) + ".")
     
-    def play_drowned(self):
+    def play_thirst(self):
         #TODO video
         print("Ran out of water")
     
@@ -219,7 +219,7 @@ class Game:
             raise Exception("Health > " + len(self.health))
         elif self.water < 0:
             self.dead = True
-            self.play_drowned()
+            self.play_thirst()
         elif self.food < 0:
             self.dead = True
             self.play_starved()

@@ -22,7 +22,9 @@ class Game:
         self.videoDict = {"thirst" : "https://youtu.be/8TmwEUHKRo8",
          "starved" : "https://www.youtube.com/watch?v=yKG0uEV54Sk",
          "bribe_failure" : "https://www.youtube.com/watch?v=1jQrROhz0d8",
-         "bribe_success" : "https://www.youtube.com/watch?v=NnFxpSS4Hvo"}
+         "bribe_success" : "https://www.youtube.com/watch?v=NnFxpSS4Hvo",
+         "caught" : "https://youtu.be/uD7Ef8aVfVg",
+         "credits" : "https://www.youtube.com/watch?v=9qcSuGpebIE"}
 
     def play(self, event):
         webbrowser.open_new_tab(self.videoDict[event])
@@ -209,21 +211,19 @@ class Game:
     
     def play_thirst(self):
         self.play("thirst")
-        print("Ran out of water")
+        print("You ran out of water and died.")
     
     def play_starved(self):
         self.play("starved")
-        print("Starved")
+        print("You ran out of food and died.")
 
     def play_caught_hurt(self):
-        #TODO video
-        print("Caught hurt")
+        self.play("caught")
+        print("You were caught stealing water. Your dad hits you.")
 
     def check_alive(self):
         if self.current_health > len(self.health):
             self.dead = True
-            #TODO: Remove exception
-            raise Exception("Health > " + len(self.health))
         if self.water < 0:
             self.dead = True
             self.play_thirst()
@@ -292,9 +292,20 @@ class Game:
                                 self.play("bribe_success")
                                 self.lower_health()
                         self.landmarks.pop(0)
+        if (not self.dead):
+            print("Congratulations. You have beat the game. Thank you for playing!")
+            self.play("credits")
+            return True
+        return False
 
-        
-
-
-intent = Game()
-intent.main()
+while True:
+    intent = Game()
+    result = intent.main()
+    if (result):
+        break
+    else:
+        enter = input("You failed to beat the game. Try again? (Y/N): ")
+        if (enter.lower() == "y"):
+            pass
+        else:
+            break

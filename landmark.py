@@ -4,10 +4,17 @@ from threading import Thread
 import random
 class Landmark:
     def __init__(self):
+        self.videoDict = {"thirst" : "https://youtu.be/8TmwEUHKRo8",
+         "starved" : "https://www.youtube.com/watch?v=yKG0uEV54Sk",
+         "bribe_failure" : "https://www.youtube.com/watch?v=1jQrROhz0d8",
+         "bribe_success" : "https://www.youtube.com/watch?v=NnFxpSS4Hvo",
+         "caught": "https://youtu.be/uD7Ef8aVfVg"}
         self.distance = 0
     def play_landmark(self):
         print("Super play triggered")
         return 0
+    def play(self, event):
+        webbrowser.open_new_tab(self.videoDict[event])
 
 class FirstEncounter(Landmark):
     def __init__(self):

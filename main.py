@@ -10,6 +10,8 @@ import landmark
 class Game:
 
     def __init__(self):
+        self.vids = True
+        self.played_grete = False
         self.hours_to_survive = 720
         self.hours_survived = 0
         self.food = 0
@@ -28,7 +30,8 @@ class Game:
          "grete_steal" : "https://youtu.be/Q3p8oGveOqE"}
 
     def play(self, event):
-        webbrowser.open_new_tab(self.videoDict[event])
+        if (self.vids):
+            webbrowser.open_new_tab(self.videoDict[event])
     
     def raise_health(self):
         if (self.current_health == 0):
@@ -84,7 +87,7 @@ class Game:
                 print("Your input could not be converted to a string. Please try again.")
 
     def instructions(self):
-        if (self.input_equals_str("yes", "Do you need instructions? (YES/NO): ")):
+        if (self.input_equals_str("y", "Do you need instructions? (Y/N): ")):
             print()
             print("THIS PROGRAM SIMULATES A TRIP OVER THE OREGON TRAIL FROM")
             print("Whoops... I think that's the wrong program. Anyways...")
@@ -93,7 +96,7 @@ class Game:
             print("one month as a bug in the same house as your hostile family. After")
             print("one month, you will be granted your freedom, but it won't be easy.")
             print()
-            print("Any time you are asked to input yes/no, the program will default to no")
+            print("Any time you are asked to input yes/no (Y/N), the program will default to no")
             print("if you input something like, \'I BET YOU DIDN\'T CONSIDER THIS CASE ERIK")
             print("MWAHAHHAHAHA\'.")
             print("Usually, you can use ENTER to cancel an action, even if not stated.")
@@ -146,18 +149,18 @@ class Game:
             if enter == "":
                 return
             if (enter.lower() == "low"):
-                enter = input("You have selected LOW risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected LOW risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 0
                     break
             elif (enter.lower() == "medium"):
-                enter = input("You have selected MEDIUM risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected MEDIUM risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 1
                     break
             elif (enter.lower() == "high"):
-                enter = input("You have selected HIGH risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected HIGH risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 2
                     break
             else:
@@ -179,18 +182,18 @@ class Game:
             if enter == "":
                 return
             if (enter.lower() == "low"):
-                enter = input("You have selected LOW risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected LOW risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 0
                     break
             elif (enter.lower() == "medium"):
-                enter = input("You have selected MEDIUM risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected MEDIUM risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 1
                     break
             elif (enter.lower() == "high"):
-                enter = input("You have selected HIGH risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected HIGH risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 2
                     break
             else:
@@ -254,11 +257,21 @@ class Game:
                 stolen_water = random.randrange(0, 3)
                 self.food -= stolen_food
                 self.water -= stolen_water
-                self.play("grete_steal")
+                if (not self.played_grete):
+                    self.play("grete_steal")
+                    self.played_grete = True
                 print("Grete snuck in during the night and stole " + str(stolen_food) + " pieces of food and " + str(stolen_water) + " pieces of water.")
+    
+    def vid_prompt(self):
+        print("There are videos that act out what is happening in the game.")
+        enter = input("Would you like the videos to play during this run of the program? (Y/N): ")
+        if (enter.lower() == "n"):
+            self.vids = False
+
     
     def main(self):
         self.instructions()
+        self.vid_prompt()
         self.buy_goods()
         while ((self.hours_survived < self.hours_to_survive) & (not self.dead)):
             if(not self.dead):

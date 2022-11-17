@@ -23,7 +23,7 @@ class Landmark:
         "boarders_caught" : "https://youtu.be/J6h62HCqJzk",
         "dad_yeet" : "https://youtu.be/oL-eJKanHqY",
         "maid_free" : "https://youtu.be/_YZbCLQ7h68",
-        "maid_febreeze" : ""}
+        "maid_febreeze" : "https://youtu.be/MXBYx0EtDIg"}
         self.distance = 0
     def play_landmark(self):
         print("If this is printed, you've broken my code somehow")

@@ -3,7 +3,8 @@ import time
 from threading import Thread
 import random
 class Landmark:
-    def __init__(self):
+    def __init__(self, vids):
+        self.vids = vids
         self.videoDict = {"mom_scared" : "https://youtu.be/9sDtAp2ppkQ",
         "jump" : "https://youtu.be/nk_fOslSHds",
         "boss_run" : "https://youtu.be/Z-GyPWcEm94",
@@ -28,11 +29,12 @@ class Landmark:
         print("If this is printed, you've broken my code somehow")
         return 0
     def play(self, event):
-        webbrowser.open_new_tab(self.videoDict[event])
+        if (self.vids):
+            webbrowser.open_new_tab(self.videoDict[event])
 
 class FirstEncounter(Landmark):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, vids):
+        super().__init__(vids)
         self.distance = 90
     def play_landmark(self):
         print("It's been two days and your parents become suspicious.")
@@ -52,8 +54,8 @@ class FirstEncounter(Landmark):
             return 0
 
 class OfficeManager(Landmark):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, vids):
+        super().__init__(vids)
         self.distance = 180
     def play_landmark(self):
         print("Your office manager has shown up, angry that you're missing work.")
@@ -73,8 +75,8 @@ class OfficeManager(Landmark):
             return 1
 
 class FoodDecision(Landmark):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, vids):
+        super().__init__(vids)
         self.distance = 270
     def play_landmark(self):
         print("Your sister is concerned and wants to give you food.")
@@ -92,8 +94,8 @@ class FoodDecision(Landmark):
             return "food-"
 
 class HideFromSister(Landmark):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, vids):
+        super().__init__(vids)
         self.distance = 360
     def play_landmark(self):
         print("Your sister is about to come into the room. You must hide. You have two seconds for the next prompt.")
@@ -118,8 +120,8 @@ class HideFromSister(Landmark):
             return 1
 
 class AppleEncounter(Landmark):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, vids):
+        super().__init__(vids)
         self.distance = 450
     def play_landmark(self):
         print("You are hanging upside down in your room as this is your new hobby.")
@@ -153,8 +155,8 @@ class AppleEncounter(Landmark):
                 return "water-"
 
 class Boarders(Landmark):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, vids):
+        super().__init__(vids)
         self.distance = 540
     def play_landmark(self):
         print("You hear your family meet with the boarders, as Grete plays the violin.")
@@ -183,8 +185,8 @@ class Boarders(Landmark):
             return 0
 
 class DadTrap(Landmark):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, vids):
+        super().__init__(vids)
         self.distance = 630
     def play_landmark(self):
         print("Your dad feels bad for everything he did.")
@@ -201,8 +203,8 @@ class DadTrap(Landmark):
             return 0
 
 class Maid(Landmark):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, vids):
+        super().__init__(vids)
         self.distance = 720
     def play_landmark(self):
         print("The maid asks you if you are okay. She offers to set you free.")

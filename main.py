@@ -19,7 +19,6 @@ class Game:
         self.currency = 500
         self.health = ["good", "moderate", "marginal", "critical"]
         self.current_health = 0
-        self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision(), landmark.HideFromSister(), landmark.AppleEncounter(), landmark.Boarders(), landmark.DadTrap(), landmark.Maid()]
         self.dead = False
         self.videoDict = {"thirst" : "https://youtu.be/8TmwEUHKRo8",
          "starved" : "https://www.youtube.com/watch?v=yKG0uEV54Sk",
@@ -28,6 +27,9 @@ class Game:
          "caught" : "https://youtu.be/uD7Ef8aVfVg",
          "credits" : "https://www.youtube.com/watch?v=9qcSuGpebIE",
          "grete_steal" : "https://youtu.be/Q3p8oGveOqE"}
+
+    def init_landmarks(self):
+        self.landmarks = [landmark.FirstEncounter(self.vids), landmark.OfficeManager(self.vids), landmark.FoodDecision(self.vids), landmark.HideFromSister(self.vids), landmark.AppleEncounter(self.vids), landmark.Boarders(self.vids), landmark.DadTrap(self.vids), landmark.Maid(self.vids)]
 
     def play(self, event):
         if (self.vids):
@@ -265,13 +267,16 @@ class Game:
     def vid_prompt(self):
         print("There are videos that act out what is happening in the game.")
         enter = input("Would you like the videos to play during this run of the program? (Y/N): ")
-        if (enter.lower() == "n"):
+        if (enter.lower() == "y"):
+            self.vids = True
+        else:
             self.vids = False
 
     
     def main(self):
         self.instructions()
         self.vid_prompt()
+        self.init_landmarks()
         self.buy_goods()
         while ((self.hours_survived < self.hours_to_survive) & (not self.dead)):
             if(not self.dead):

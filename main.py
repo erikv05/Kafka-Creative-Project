@@ -10,6 +10,8 @@ import landmark
 class Game:
 
     def __init__(self):
+        self.vids = True
+        self.played_grete = False
         self.hours_to_survive = 720
         self.hours_survived = 0
         self.food = 0
@@ -17,9 +19,22 @@ class Game:
         self.currency = 500
         self.health = ["good", "moderate", "marginal", "critical"]
         self.current_health = 0
-        self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision(), landmark.HideFromSister(), landmark.AppleEncounter(), landmark.Boarders(), landmark.DadTrap(), landmark.Maid()]
         self.dead = False
+        self.videoDict = {"thirst" : "https://youtu.be/8TmwEUHKRo8",
+         "starved" : "https://www.youtube.com/watch?v=yKG0uEV54Sk",
+         "bribe_failure" : "https://www.youtube.com/watch?v=1jQrROhz0d8",
+         "bribe_success" : "https://www.youtube.com/watch?v=NnFxpSS4Hvo",
+         "caught" : "https://youtu.be/uD7Ef8aVfVg",
+         "credits" : "https://www.youtube.com/watch?v=9qcSuGpebIE",
+         "grete_steal" : "https://youtu.be/Q3p8oGveOqE"}
 
+    def init_landmarks(self):
+        self.landmarks = [landmark.FirstEncounter(self.vids), landmark.OfficeManager(self.vids), landmark.FoodDecision(self.vids), landmark.HideFromSister(self.vids), landmark.AppleEncounter(self.vids), landmark.Boarders(self.vids), landmark.DadTrap(self.vids), landmark.Maid(self.vids)]
+
+    def play(self, event):
+        if (self.vids):
+            webbrowser.open_new_tab(self.videoDict[event])
+    
     def raise_health(self):
         if (self.current_health == 0):
             return
@@ -74,7 +89,7 @@ class Game:
                 print("Your input could not be converted to a string. Please try again.")
 
     def instructions(self):
-        if (self.input_equals_str("yes", "Do you need instructions? (YES/NO): ")):
+        if (self.input_equals_str("y", "Do you need instructions? (Y/N): ")):
             print()
             print("THIS PROGRAM SIMULATES A TRIP OVER THE OREGON TRAIL FROM")
             print("Whoops... I think that's the wrong program. Anyways...")
@@ -83,7 +98,7 @@ class Game:
             print("one month as a bug in the same house as your hostile family. After")
             print("one month, you will be granted your freedom, but it won't be easy.")
             print()
-            print("Any time you are asked to input yes/no, the program will default to no")
+            print("Any time you are asked to input yes/no (Y/N), the program will default to no")
             print("if you input something like, \'I BET YOU DIDN\'T CONSIDER THIS CASE ERIK")
             print("MWAHAHHAHAHA\'.")
             print("Usually, you can use ENTER to cancel an action, even if not stated.")
@@ -136,18 +151,18 @@ class Game:
             if enter == "":
                 return
             if (enter.lower() == "low"):
-                enter = input("You have selected LOW risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected LOW risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 0
                     break
             elif (enter.lower() == "medium"):
-                enter = input("You have selected MEDIUM risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected MEDIUM risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 1
                     break
             elif (enter.lower() == "high"):
-                enter = input("You have selected HIGH risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected HIGH risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 2
                     break
             else:
@@ -169,18 +184,18 @@ class Game:
             if enter == "":
                 return
             if (enter.lower() == "low"):
-                enter = input("You have selected LOW risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected LOW risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 0
                     break
             elif (enter.lower() == "medium"):
-                enter = input("You have selected MEDIUM risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected MEDIUM risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 1
                     break
             elif (enter.lower() == "high"):
-                enter = input("You have selected HIGH risk. Is this correct? (YES/NO): ")
-                if (enter.lower() == "yes"):
+                enter = input("You have selected HIGH risk. Is this correct? (Y/N): ")
+                if (enter.lower() == "y"):
                     risk = 2
                     break
             else:
@@ -200,27 +215,25 @@ class Game:
             print("You have " + str(self.food) + " pieces of food and " + str(self.water) + " glasses of water left.")
             print("Your health is " + str(self.health[self.current_health]) + ".")
     
-    def play_drowned(self):
-        #TODO video
-        print("Ran out of water")
+    def play_thirst(self):
+        self.play("thirst")
+        print("You ran out of water and died.")
     
     def play_starved(self):
-        #TODO video
-        print("Starved")
+        self.play("starved")
+        print("You ran out of food and died.")
 
     def play_caught_hurt(self):
-        #TODO video
-        print("Caught hurt")
+        self.play("caught")
+        print("You were caught stealing water. Your dad hits you.")
 
     def check_alive(self):
         if self.current_health > len(self.health):
             self.dead = True
-            #TODO: Remove exception
-            raise Exception("Health > " + len(self.health))
-        elif self.water < 0:
+        if self.water < 0:
             self.dead = True
-            self.play_drowned()
-        elif self.food < 0:
+            self.play_thirst()
+        if self.food < 0:
             self.dead = True
             self.play_starved()
 
@@ -246,10 +259,24 @@ class Game:
                 stolen_water = random.randrange(0, 3)
                 self.food -= stolen_food
                 self.water -= stolen_water
+                if (not self.played_grete):
+                    self.play("grete_steal")
+                    self.played_grete = True
                 print("Grete snuck in during the night and stole " + str(stolen_food) + " pieces of food and " + str(stolen_water) + " pieces of water.")
+    
+    def vid_prompt(self):
+        print("There are videos that act out what is happening in the game.")
+        enter = input("Would you like the videos to play during this run of the program? (Y/N): ")
+        if (enter.lower() == "y"):
+            self.vids = True
+        else:
+            self.vids = False
+
     
     def main(self):
         self.instructions()
+        self.vid_prompt()
+        self.init_landmarks()
         self.buy_goods()
         while ((self.hours_survived < self.hours_to_survive) & (not self.dead)):
             if(not self.dead):
@@ -278,15 +305,27 @@ class Game:
                             prob = random.randrange(0, 260)
                             if self.currency > prob:
                                 print("The boarders accept your bribe. You are free.")
-                                #TODO: accept bribe
+                                self.play("bribe_failure")
                                 break
                             else:
                                 print("The boarders do not accept your bribe, hurting you in the process.")
+                                self.play("bribe_success")
                                 self.lower_health()
                         self.landmarks.pop(0)
+        if (not self.dead):
+            print("Congratulations. You have beat the game. Thank you for playing!")
+            self.play("credits")
+            return True
+        return False
 
-        
-
-
-intent = Game()
-intent.main()
+while True:
+    intent = Game()
+    result = intent.main()
+    if (result):
+        break
+    else:
+        enter = input("You failed to beat the game. Try again? (Y/N): ")
+        if (enter.lower() == "y"):
+            pass
+        else:
+            break

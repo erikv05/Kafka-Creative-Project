@@ -130,12 +130,13 @@ class AppleEncounter(Landmark):
         enter = input("Which do you choose? (DROP/STAY): ")
         if enter.lower() == "stay":
             prob = random.random()
-            if (prob < 0.1):
+            if (prob < 0.3):
                 print("You have successfully hidden from your mother, avoiding your dad's wrath altogether")
                 self.play("crawl")
                 return 0
             else:
                 print("Your mother sees you as you hang and freaks out, fainting.")
+                print("Luckily, your dad doesn't see you hanging on the ceiling.")
                 print("She knocks over 10 glasses of water.")
                 self.play("mom_water")
                 return "water--"

@@ -239,7 +239,7 @@ class Game:
 
     def progress(self):
         print("You have survived " + str(self.hours_survived) + " hours total.")
-        enter = input("Would you like to progress time or assess the situation ([P]ROGRESS/[A]SSESS): ")
+        enter = input("Would you like to progress time or assess the situation ([P]ROGRESS/[A]SSESS/): ")
         
         if ((enter.lower() == "assess") | (enter.lower() == "a")):
             self.print_stats()
@@ -267,9 +267,7 @@ class Game:
     def vid_prompt(self):
         print("There are videos that act out what is happening in the game.")
         enter = input("Would you like the videos to play during this run of the program? (Y/N): ")
-        if (enter.lower() == "y"):
-            self.vids = True
-        else:
+        if enter.lower() != "y":
             self.vids = False
 
     

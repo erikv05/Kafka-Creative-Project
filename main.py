@@ -24,7 +24,8 @@ class Game:
          "bribe_failure" : "https://www.youtube.com/watch?v=1jQrROhz0d8",
          "bribe_success" : "https://www.youtube.com/watch?v=NnFxpSS4Hvo",
          "caught" : "https://youtu.be/uD7Ef8aVfVg",
-         "credits" : "https://www.youtube.com/watch?v=9qcSuGpebIE"}
+         "credits" : "https://www.youtube.com/watch?v=9qcSuGpebIE",
+         "grete_steal" : "https://youtu.be/Q3p8oGveOqE"}
 
     def play(self, event):
         webbrowser.open_new_tab(self.videoDict[event])
@@ -253,6 +254,7 @@ class Game:
                 stolen_water = random.randrange(0, 3)
                 self.food -= stolen_food
                 self.water -= stolen_water
+                self.play("grete_steal")
                 print("Grete snuck in during the night and stole " + str(stolen_food) + " pieces of food and " + str(stolen_water) + " pieces of water.")
     
     def main(self):

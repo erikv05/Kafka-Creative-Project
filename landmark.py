@@ -192,15 +192,15 @@ class DadTrap(Landmark):
     def play_landmark(self):
         print("Your dad feels bad for everything he did.")
         print("He tells you that since you've survived for this long, you deserve your freedom.")
-        enter = input("Do you trust your dad? (YES/NO)")
-        if enter.lower() == "yes":
+        enter = input("Do you trust your dad? (Y/N): ")
+        if enter.lower() == "y":
             print("He was just trying to lure you out.")
             print("He yeets you out the window.")
             self.play("dad_yeet")
             return None
         else:
             print("Your family assumes you're dead since you're not answering.")
-            print("They schedule the made to take out your corpse in 2 days.")
+            print("They schedule the maid to take out your corpse in 2 days.")
             return 0
 
 class Maid(Landmark):
@@ -209,8 +209,8 @@ class Maid(Landmark):
         self.distance = 720
     def play_landmark(self):
         print("The maid asks you if you are okay. She offers to set you free.")
-        enter = input("Do you trust the maid? (YES/NO)")
-        if enter.lower() == "yes":
+        enter = input("Do you trust the maid? (Y/N): ")
+        if enter.lower() == "y":
             print("The maid helps you out of the house and escorts you to freedom.")
             self.play("maid_free")
             return 0

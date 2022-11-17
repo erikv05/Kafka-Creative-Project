@@ -19,6 +19,7 @@ class Game:
         self.current_health = 0
         self.landmarks = [landmark.FirstEncounter(), landmark.OfficeManager(), landmark.FoodDecision(), landmark.HideFromSister(), landmark.AppleEncounter(), landmark.Boarders(), landmark.DadTrap(), landmark.Maid()]
         self.dead = False
+        self.videoDict = {"thirst" : "https://youtu.be/8TmwEUHKRo8"}
 
     def raise_health(self):
         if (self.current_health == 0):
@@ -200,12 +201,12 @@ class Game:
             print("You have " + str(self.food) + " pieces of food and " + str(self.water) + " glasses of water left.")
             print("Your health is " + str(self.health[self.current_health]) + ".")
     
-    def play_drowned(self):
-        #TODO video
+    def play_thirst(self):
+        webbrowser.open_new_tab(self.videoDict["thirst"])
         print("Ran out of water")
     
     def play_starved(self):
-        #TODO video
+        webbrowser.open_new_tab(self.videoDict["starved"])
         print("Starved")
 
     def play_caught_hurt(self):
@@ -217,10 +218,10 @@ class Game:
             self.dead = True
             #TODO: Remove exception
             raise Exception("Health > " + len(self.health))
-        elif self.water < 0:
+        if self.water < 0:
             self.dead = True
             self.play_drowned()
-        elif self.food < 0:
+        if self.food < 0:
             self.dead = True
             self.play_starved()
 

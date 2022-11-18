@@ -26,7 +26,8 @@ class Game:
          "bribe_success" : "https://www.youtube.com/watch?v=NnFxpSS4Hvo",
          "caught" : "https://youtu.be/uD7Ef8aVfVg",
          "credits" : "https://www.youtube.com/watch?v=9qcSuGpebIE",
-         "grete_steal" : "https://youtu.be/Q3p8oGveOqE"}
+         "grete_steal" : "https://youtu.be/Q3p8oGveOqE",
+         "rick_roll" : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
 
     def init_landmarks(self):
         self.landmarks = [landmark.FirstEncounter(self.vids), landmark.OfficeManager(self.vids), landmark.FoodDecision(self.vids), landmark.HideFromSister(self.vids), landmark.AppleEncounter(self.vids), landmark.Boarders(self.vids), landmark.DadTrap(self.vids), landmark.Maid(self.vids)]
@@ -312,7 +313,10 @@ class Game:
                         self.landmarks.pop(0)
         if (not self.dead):
             print("Congratulations. You have beat the game. Thank you for playing!")
-            self.play("credits")
+            if (input("Would you like to play the credits and bloopers? (Y/N): ").lower() == "y"):
+                self.play("credits")
+                time.sleep(10)
+                self.play("rick_roll")
             return True
         return False
 

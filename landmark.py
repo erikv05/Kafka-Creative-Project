@@ -9,7 +9,6 @@ class Landmark:
         "jump" : "https://youtu.be/nk_fOslSHds",
         "boss_run" : "https://youtu.be/Z-GyPWcEm94",
         "lose_job" : "https://youtu.be/HUK-B84BlHg",
-        "newspaper" : "https://youtu.be/k8OBUw9lrlE",
         "fresh" : "https://youtu.be/NPgqnDgTqRI",
         "rotten" : "https://youtu.be/slYw35OokMo",
         "hide_fail" : "https://youtu.be/xZjufO4k7dY",
@@ -70,8 +69,6 @@ class OfficeManager(Landmark):
             print("You run outside and try to explain the situation. You forget that you can't talk.")
             print("Your boss runs away and your dad chases back inside with a newspaper, hitting you.")
             self.play("boss_run")
-            time.sleep(7)
-            self.play("newspaper")
             return 1
 
 class FoodDecision(Landmark):

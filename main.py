@@ -303,11 +303,11 @@ class Game:
                             prob = random.randrange(0, 260)
                             if self.currency > prob:
                                 print("The boarders accept your bribe. You are free.")
-                                self.play("bribe_failure")
+                                self.play("bribe_success")
                                 break
                             else:
                                 print("The boarders do not accept your bribe, hurting you in the process.")
-                                self.play("bribe_success")
+                                self.play("bribe_failure")
                                 self.lower_health()
                         self.landmarks.pop(0)
         if (not self.dead):

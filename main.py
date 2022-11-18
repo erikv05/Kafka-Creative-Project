@@ -314,6 +314,7 @@ class Game:
         if (not self.dead):
             print("Congratulations. You have beat the game. Thank you for playing!")
             if (input("Would you like to play the credits and bloopers? (Y/N): ").lower() == "y"):
+                self.vids = True
                 self.play("credits")
                 time.sleep(10)
                 self.play("rick_roll")

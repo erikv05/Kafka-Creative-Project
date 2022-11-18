@@ -131,7 +131,7 @@ class AppleEncounter(Landmark):
         if enter.lower() == "stay":
             prob = random.random()
             if (prob < 0.3):
-                print("You have successfully hidden from your mother, avoiding your dad's wrath altogether")
+                print("You have successfully hidden from your mother, avoiding your dad's wrath altogether.")
                 self.play("crawl")
                 return 0
             else:
